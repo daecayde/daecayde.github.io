@@ -1,79 +1,111 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400&display=swap');
+/* --- NEW STYLES FOR THE POEM FEATURE --- */
 
-body, html {
-    height: 100%;
-    margin: 0;
-    overflow: hidden; /* Prevents scrollbars during heart animation */
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(45deg, #ffafbd 0%, #ffc3a0 50%, #ffafbd 100%);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.container {
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 50px 40px;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 85%;
-    z-index: 10;
-}
-
-#reveal-btn {
-    background-color: #d84b6b;
-    color: white;
-    border: none;
-    padding: 15px 30px;
+.secondary-btn {
+    background-color: transparent;
+    color: #d84b6b;
+    border: 2px solid #d84b6b;
+    padding: 10px 25px;
     font-size: 1rem;
     border-radius: 50px;
     cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s;
+    transition: all 0.3s;
     font-family: 'Poppins', sans-serif;
-    margin-top: 20px;
+    margin-top: 15px;
+    display: inline-block;
 }
 
-#reveal-btn:hover {
-    background-color: #b03a56;
-    transform: scale(1.05);
+.secondary-btn:hover {
+    background-color: #d84b6b;
+    color: white;
+    box-shadow: 0 5px 15px rgba(216, 75, 107, 0.4);
 }
 
-.hidden {
-    display: none;
+/* Modal (Pop-up) Background */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
     opacity: 0;
-}
-
-.show {
-    display: block;
-    animation: fadeInUp 1s forwards;
-}
-
-@keyframes fadeInUp {
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Heart animation styles */
-.heart {
-    position: absolute;
-    color: #d84b6b;
-    font-size: 20px;
-    user-select: none;
     pointer-events: none;
-    animation: floatUp 4s linear forwards;
+    transition: opacity 0.5s ease;
 }
 
-@keyframes floatUp {
-    0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+.modal.show-modal {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Modal Content Box */
+.modal-content {
+    background: #fffafb;
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 90%;
+    width: 450px;
+    text-align: left;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    transform: translateY(30px);
+    transition: transform 0.5s ease;
+}
+
+.modal.show-modal .modal-content {
+    transform: translateY(0);
+}
+
+#close-poem {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#close-poem:hover {
+    color: #d84b6b;
+}
+
+.poem-title {
+    font-family: 'Playfair Display', serif;
+    color: #b03a56;
+    margin-top: 0;
+    border-bottom: 1px solid #ffafbd;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.poem-body {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #444;
+    line-height: 1.8;
+    min-height: 150px; /* Keeps the box from jumping while typing */
+    white-space: pre-wrap; /* Respects line breaks in JS */
+}
+
+/* Blinking cursor for typewriter */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #d84b6b;
+    animation: blink 0.8s infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
