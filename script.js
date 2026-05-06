@@ -6,12 +6,14 @@
 
 const myPoem = `In the morning light, you shine so bright,
 A beauty that clears the darkest night.
-
-(Replace these lines with your actual poem.)
-(Write as much as you want!)
-
-Our vibe is unmatched, it's plain to see,
-Shravani, you mean the world to me.`;
+Like the graceful light, you bless my day
+I love you so damn much and I follow your every way.
+Like the sunflower when in need of light I turn to thee,
+you lift me up and set me free
+from all the sorrows and pains I get
+I thank thee lord for how we met.
+Good morning my love rise and shine,
+I wanna feel the joy everyday of calling you mine.}`;
 
 // ==========================================
 // 2. INTERACTIVE LOGIC (Leave this as is!)
