@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good Morning, my dear Shravani</title>
-    <!-- This links the HTML to your CSS file -->
+    <title>Good Morning, Shravani</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-card">
         <div class="sun-icon">☀️</div>
         <h1>Good morning, Shravani.</h1>
-        <p class="message">I love you mwaaaahhh.</p>
-        <p class="subtext">Wishing you da best day my love.</p>
+        
+        <button id="reveal-btn">Open your morning surprise</button>
+        
+        <div id="secret-content" class="hidden">
+            <p class="message">I love you.</p>
+            <p class="subtext">Our vibe is unmatched. May your day be as legendary as a Great Rune. 💛</p>
+        </div>
     </div>
+
+    <!-- This links your JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
