@@ -3,36 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good Morning, Shravani</title>
-    <link rel="stylesheet" href="style.css">
+    <title>For My Universe</title>
+    <style>
+        :root {
+            --heart-red: #ff0a54;
+            --soft-pink: #ffccd5;
+            --deep-rose: #800f2f;
+            --bg-cream: #fff5f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background-color: var(--bg-cream);
+            color: var(--deep-rose);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 90%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--heart-red);
+            margin-left: 25px;
+            font-weight: 600;
+        }
+
+        section { padding: 100px 10%; min-height: 60vh; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+        .hero { background: linear-gradient(180deg, #ffccd5 0%, #fff5f7 100%); height: 100vh; justify-content: center; }
+        
+        .apology-container {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            max-width: 700px;
+            border-left: 8px solid var(--heart-red);
+        }
+
+        .reasons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; }
+        .reason-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(128, 15, 47, 0.9);
+            z-index: 2000;
+            justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .btn { padding: 15px 30px; border: none; border-radius: 50px; cursor: pointer; font-size: 1rem; margin: 10px; font-weight: bold; transition: 0.2s; }
+        .btn-yes { background: var(--heart-red); color: white; }
+        .btn-no { background: #eee; color: #555; position: relative; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        h1 { animation: float 3s ease-in-out infinite; }
+    </style>
 </head>
 <body>
-    <!-- Main Greeting Card -->
-    <div class="container" id="main-card">
-        <div class="sun-icon">☀️</div>
-        <h1>Good morning, my dearrr Shravani ji.</h1>
-        
-        <button id="reveal-btn">Open your morning surprise</button>
-        
-        <div id="secret-content" class="hidden">
-            <p class="message">I love you sooo muchhh mwaaahhhhh.</p>
-            <p class="subtext">Our vibe is unmatched my loveeeee, may your day be brighttt. 💛</p>
-            
-            <!-- New Button for the Poem -->
-            <button id="poem-btn" class="secondary-btn">Read My Poem</button>
-        </div>
-    </div>
 
-    <!-- The Poem Pop-up (Modal) -->
-    <div id="poem-modal" class="modal hidden">
+    <nav>
+        <div style="font-weight: 800; font-size: 1.4rem;">K ❤️ V</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#apology">My Apology</a>
+            <a href="#why">Why I Love You</a>
+            <a href="#" onclick="showModal('eternityModal')" style="color: var(--heart-red); border: 1px solid var(--heart-red); padding: 5px 15px; border-radius: 15px;">The Big Question</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>I'm Sorry & I Love You.</h1>
+        <p>I built this because sometimes my words aren't enough.</p>
+    </section>
+
+    <section id="apology">
+        <div class="apology-container">
+            <h2 style="color: var(--heart-red);">To My Favorite Person,</h2>
+            <p style="font-size: 1.2rem; line-height: 1.6; color: #555;">
+                I’ve been thinking a lot about how I acted recently. I know I wasn't my best self, and I hate that I did anything to upset you or make you feel less than the queen you are. 
+                <br><br>
+                You deserve nothing but peace and happiness, and I promise to work harder at being the man who gives you both. Please forgive my mistakes; they come from a place of learning, but my love for you comes from a place that is permanent.
+            </p>
+            <button class="btn btn-yes" onclick="showModal('forgiveModal')">Do you forgive me?</button>
+        </div>
+    </section>
+
+    <section id="why">
+        <h2>Everything I Love About You</h2>
+        <div class="reasons-grid">
+            <div class="reason-card"><h3>Your Smile</h3><p>It literally changes the mood of my entire day.</p></div>
+            <div class="reason-card"><h3>Your Strength</h3><p>How you handle things with such grace inspires me.</p></div>
+            <div class="reason-card"><h3>Our Bond</h3><p>Nothing feels more natural than being by your side.</p></div>
+        </div>
+    </section>
+
+    <!-- Forgive Modal -->
+    <div id="forgiveModal" class="modal">
         <div class="modal-content">
-            <button id="close-poem">✖</button>
-            <h2 class="poem-title">For You</h2>
-            <!-- The Javascript -->
-            <div id="typewriter-text" class="poem-body"></div>
+            <h2 id="forgiveText">Will you forgive me? 🥺</h2>
+            <button class="btn btn-yes" onclick="forgiven()">Yes</button>
+            <button class="btn btn-no" id="forgiveNo" onmouseover="moveButton(this)" onclick="moveButton(this)">No</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Eternity Modal -->
+    <div id="eternityModal" class="modal">
+        <div class="modal-content">
+            <h2 id="eternityText">Spend eternity with me?</h2>
+            <button class="btn btn-yes" id="eternityYes" onclick="accepted()">Yes!</button>
+            <button class="btn btn-no" id="eternityNo" onclick="declineEternity()">No</button>
+        </div>
+    </div>
+
+    <script>
+        function showModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        // Logic for "No" button running away (Forgiveness)
+        function moveButton(btn) {
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            document.getElementById('forgiveText').innerText = "Nice try! Click Yes! ❤️";
+        }
+
+        function forgiven() {
+            document.getElementById('forgiveText').innerText = "Thank you for being so patient with me. I love you! ❤️";
+            setTimeout(() => { document.getElementById('forgiveModal').style.display = 'none'; }, 2000);
+        }
+
+        // Logic for Eternity (Growing Button)
+        let eternityNoCount = 0;
+        function declineEternity() {
+            eternityNoCount++;
+            const yesBtn = document.getElementById('eternityYes');
+            const noBtn = document.getElementById('eternityNo');
+            const text = document.getElementById('eternityText');
+
+            if (eternityNoCount < 5) {
+                let size = 1 + (eternityNoCount * 0.5);
+                yesBtn.style.transform = `scale(${size})`;
+                text.innerText = "Are you sure? Think again! 🌹";
+            } else {
+                noBtn.style.display = 'none';
+                text.innerText = "Okay, No is gone. Only Yes remains! 😊";
+            }
+        }
+
+        function accepted() {
+            document.getElementById('eternityText').innerText = "I love you forever! ❤️";
+            setTimeout(() => { document.getElementById('eternityModal').style.display = 'none'; }, 2000);
+        }
+    </script>
 </body>
 </html>
