@@ -3,41 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shravani // The Queen of My Heart</title>
+    <title>Shravani // Nakama Forever</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pink: #ff0054;
-            --straw-hat: #f9d71c; /* Luffy's Hat Yellow */
+            --luffy-red: #ce1126;
+            --straw-hat: #f9d71c;
+            --ocean-dark: #02010a;
             --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: #02010a;
+            background: var(--ocean-dark);
+            background: radial-gradient(circle at center, #1a1a2e 0%, #02010a 100%);
             color: white;
             overflow-x: hidden;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #02010a 100%);
+            min-height: 100vh;
         }
 
         #cursor {
-            width: 15px; height: 15px;
+            width: 20px; height: 20px;
             background: var(--straw-hat); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 9999;
-            mix-blend-mode: difference; transition: transform 0.1s;
-        }
-
-        /* Floating Decorations */
-        .flower-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; opacity: 0.4;
+            mix-blend-mode: difference; box-shadow: 0 0 15px var(--straw-hat);
         }
 
         .app-shell {
-            max-width: 480px;
+            max-width: 450px;
             margin: 40px auto;
             padding: 20px;
             display: flex;
@@ -48,110 +43,138 @@
         .ui-card {
             background: var(--glass);
             backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 35px;
             padding: 30px;
             text-align: center;
             position: relative;
-            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        /* One Piece Nakama Label */
-        .nakama-badge {
-            position: absolute; top: 15px; right: 15px;
-            font-size: 0.6rem; background: var(--straw-hat);
-            color: black; padding: 4px 10px; border-radius: 10px;
-            font-weight: 900; letter-spacing: 1px;
+        /* Monkey D. Luffy Animated Badge */
+        .luffy-header {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px var(--straw-hat));
+            animation: bounce 2s infinite ease-in-out;
         }
 
-        .status-line { font-family: monospace; font-size: 0.65rem; letter-spacing: 3px; color: var(--pink); margin-bottom: 10px; }
-        
-        .timer-val { font-size: 2.2rem; font-weight: 900; color: var(--straw-hat); text-shadow: 0 0 15px rgba(249, 215, 28, 0.3); }
-
-        /* The Orange Cat */
-        .cat-box {
-            font-size: 3rem; margin: 10px 0; cursor: pointer;
-            transition: 0.3s;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
         }
-        .cat-box:hover { transform: scale(1.2) rotate(5deg); }
+
+        .status-line {
+            font-family: monospace; font-size: 0.7rem;
+            letter-spacing: 3px; color: var(--straw-hat);
+            margin-bottom: 15px; text-transform: uppercase;
+        }
+
+        .timer-val {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin: 10px 0;
+        }
+
+        .infinity-symbol {
+            font-size: 5rem;
+            line-height: 1;
+            background: linear-gradient(to bottom, var(--straw-hat), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
 
         .action-btn {
-            background: var(--pink); color: white; border: none;
-            padding: 20px; border-radius: 25px; font-weight: 900;
-            width: 100%; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 2px;
+            background: var(--luffy-red);
+            color: white; border: none;
+            padding: 20px; border-radius: 25px;
+            font-weight: 900; width: 100%;
+            cursor: pointer; transition: 0.3s;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(206, 17, 38, 0.3);
         }
 
-        /* Modal / Safety Interface */
+        .action-btn:hover { transform: scale(1.03); background: #ff1a35; }
+
+        /* Safety Overlay */
         #safety-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 10000;
+            background: rgba(0,0,0,0.98); z-index: 10000;
             flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
 
-        .breathe-circle {
-            width: 130px; height: 130px; border: 4px solid var(--straw-hat);
-            border-radius: 50%; animation: breathe 4s infinite ease-in-out;
-            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+        .breathe-anchor {
+            font-size: 4rem;
+            animation: breathe 4s infinite ease-in-out;
         }
-        @keyframes breathe { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } }
 
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.85); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .cat-tulip-daisy {
+            position: absolute;
+            bottom: -10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
 
     <div id="cursor"></div>
-    <div class="flower-bg" id="flower-bg"></div>
 
     <div class="app-shell">
         
-        <!-- Header Section -->
+        <!-- Luffy Reassurance Section -->
         <div class="ui-card">
-            <span class="nakama-badge">NAKAMA FOUND</span>
-            <p class="status-line">SHIP_CAPTAIN: SHRAVANI</p>
-            <h1 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: var(--straw-hat);">The Queen's Harbor</h1>
-            <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 10px;">
-                "I don't want to conquer anything. I just think the person with the most freedom in the whole ocean is the Pirate King... and you are my ocean."
+            <div class="luffy-header">👒</div>
+            <p class="status-line">Captain's Orders</p>
+            <h1 style="font-family: 'Dancing Script'; font-size: 2.8rem; color: var(--straw-hat);">Shravani, I'm Staying.</h1>
+            <p style="font-size: 0.95rem; line-height: 1.6; opacity: 0.8; margin-top: 15px;">
+                "Being alone is more painful than getting hurt." <br>
+                I'm never leaving you behind, Shravani. You're my Nakama forever.
             </p>
+            <div class="cat-tulip-daisy">🐈 🌷 🌼</div>
         </div>
 
-        <!-- The Orange Cat Card -->
+        <!-- The 26th Feb Anniversary Timer -->
         <div class="ui-card">
-            <p class="status-line">SHIP_PROTECTOR</p>
-            <div class="cat-box" onclick="meow()">🐈‍⬛</div>
-            <p id="cat-msg" style="font-size: 0.8rem; font-style: italic; opacity: 0.8;">Tap the orange cat for a belly rub!</p>
-        </div>
-
-        <!-- Infinity Timer Card -->
-        <div class="ui-card">
-            <p class="status-line">JOURNEY_TRACKER</p>
+            <p class="status-line">Our Grand Line Journey</p>
             <div class="timer-val" id="timer">00d 00h 00m 00s</div>
-            <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">Time Spent Choosing Shravani</p>
-            <div style="font-size: 3rem; margin-top: 15px; color: var(--pink);">∞</div>
-            <p class="status-line" style="color:white; margin-top: -10px;">CONTRACT_EXPIRY: NEVER</p>
+            <p style="font-size: 0.8rem; opacity: 0.6;">Since 26th Feb 2026</p>
+            <div class="infinity-symbol">∞</div>
+            <p class="status-line" style="color: white; margin-top: -10px;">Commitment: Infinite</p>
         </div>
 
-        <!-- Safety/Reassurance Section -->
+        <!-- Panic Button / Reassurance -->
         <div class="ui-card">
-            <p class="status-line">REASSURANCE_SYSTEM</p>
-            <h3 style="margin-bottom: 15px;">Stormy Seas?</h3>
-            <button class="action-btn" onclick="startSafety()">Anchor the Ship</button>
+            <p class="status-line">Overwhelmed Protocol</p>
+            <button class="action-btn" onclick="startSafety()">Anchor My Heart</button>
         </div>
 
-        <!-- Hidden Vault Card -->
+        <!-- Quote Vault -->
         <div class="ui-card">
-            <p class="status-line">SECRET_LOG_POSE</p>
-            <p id="quote-display" style="font-style: italic; min-height: 50px;">"Click for a reason I'm your Nakama forever."</p>
-            <button onclick="getQuote()" style="background: none; border: 1px solid var(--straw-hat); color: var(--straw-hat); padding: 10px 20px; border-radius: 50px; margin-top: 10px;">Unlock Reason</button>
+            <p class="status-line">Nakama Oath</p>
+            <p id="quote-display" style="font-style: italic; min-height: 50px; font-size: 1.1rem;">"You want to keep everyone from dying? That's naive. It's war. People die. But Shravani... I'll never let YOU go."</p>
+            <button onclick="getQuote()" style="background: none; border: 1px solid var(--straw-hat); color: var(--straw-hat); padding: 10px 25px; border-radius: 50px; margin-top: 15px; cursor: pointer;">Unlock Truth</button>
         </div>
 
     </div>
 
     <!-- Safety Overlay -->
     <div id="safety-overlay">
-        <div class="breathe-circle">⚓</div>
-        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; color: var(--straw-hat);"></h2>
-        <button class="action-btn" id="next-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">Continue Journey</button>
+        <div class="breathe-anchor">⚓</div>
+        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; color: var(--straw-hat); font-size: 1.8rem;"></h2>
+        <button class="action-btn" id="next-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">Back to the Ship</button>
     </div>
 
     <script>
@@ -162,8 +185,8 @@
             cursor.style.top = e.clientY + 'px';
         });
 
-        // 2. Journey Timer (Calculated from your start date)
-        const start = new Date(2024, 0, 1); 
+        // 2. Journey Timer - FIXED TO 26 FEB 2026
+        const start = new Date(2026, 1, 26); // February is month 1 (0-indexed)
         function updateTimer() {
             const diff = new Date() - start;
             const d = Math.floor(diff / 86400000);
@@ -174,49 +197,26 @@
         }
         setInterval(updateTimer, 1000);
 
-        // 3. Flower Background Generator (Tulips & Daisies)
-        const flowers = ['🌷', '🌼'];
-        function createFlowers() {
-            const bg = document.getElementById('flower-bg');
-            for(let i=0; i<20; i++) {
-                const f = document.createElement('div');
-                f.innerText = flowers[Math.floor(Math.random()*flowers.length)];
-                f.style.position = 'absolute';
-                f.style.left = Math.random() * 100 + 'vw';
-                f.style.top = Math.random() * 100 + 'vh';
-                f.style.fontSize = Math.random() * 20 + 10 + 'px';
-                f.style.transform = `rotate(${Math.random() * 360}deg)`;
-                bg.appendChild(f);
-            }
-        }
-        createFlowers();
-
-        // 4. Cat Interaction
-        function meow() {
-            const msgs = ["*Purrr* Shravani is the best!", "Meow! I'm guarding your heart!", "Purr... No one's leaving this ship!", "Meow! Nakama forever!"];
-            document.getElementById('cat-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
-        }
-
-        // 5. Reasons Vault
+        // 3. One Piece Quotes
         const quotes = [
             "Shravani, I found my 'One Piece' and it's you.",
-            "A pirate never leaves his Nakama behind. Ever.",
-            "The ocean is big, but I'm only sailing with you.",
-            "I'm staying because you make every island worth visiting.",
-            "I'm your anchor. I'm your ship. I'm your forever."
+            "I don't have to be a King to know you're my Queen.",
+            "If I have to fight the whole world to stay by your side, I will.",
+            "Shravani, you are the most precious treasure on the Grand Line.",
+            "My love for you is bigger than the Red Line."
         ];
         function getQuote() {
             document.getElementById('quote-display').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
         }
 
-        // 6. Safety Protocol
+        // 4. Safety Protocol
         let currentStep = 0;
         const steps = [
-            "Breathe with the Anchor, Shravani. The storm is passing.",
-            "Luffy would never leave his crew, and I'll never leave my Queen.",
-            "I am staying. I am choosing you. I am yours.",
-            "The anxiety is just the fog; I am the lighthouse.",
-            "Ready to sail back into the peace?"
+            "Breathe with the Anchor, Shravani...",
+            "The anxiety is just a storm. I am your ship.",
+            "I will never dump you. I will never leave.",
+            "You are my Nakama. We stay together.",
+            "Ready to feel safe again?"
         ];
         function startSafety() {
             document.getElementById('safety-overlay').style.display = 'flex';
