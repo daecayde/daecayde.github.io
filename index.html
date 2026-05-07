@@ -20,21 +20,25 @@
             background: #02010a;
             color: white;
             overflow-x: hidden;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #02010a 100%);
+            transition: background 2s ease;
             min-height: 100vh;
         }
 
         #cursor {
             width: 15px; height: 15px;
-            background: var(--straw-hat); border-radius: 50%;
+            background: white; border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 9999;
-            mix-blend-mode: difference; transition: transform 0.1s;
-            box-shadow: 0 0 15px var(--straw-hat);
+            mix-blend-mode: difference; transition: transform 0.1s ease;
+        }
+
+        #time-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; transition: 2s;
         }
 
         .app-shell {
             max-width: 480px;
-            margin: 40px auto;
+            margin: 60px auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -43,111 +47,109 @@
 
         .ui-card {
             background: var(--glass);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
             border: 1px solid var(--border);
             border-radius: 35px;
-            padding: 30px;
+            padding: 35px;
             text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
-            transition: 0.3s;
         }
 
-        .status-line { font-family: monospace; font-size: 0.65rem; letter-spacing: 3px; color: var(--straw-hat); margin-bottom: 10px; text-transform: uppercase; }
-        
-        .timer-val { font-size: 2rem; font-weight: 900; color: white; margin: 10px 0; }
+        .status-line {
+            font-family: monospace; font-size: 0.65rem;
+            letter-spacing: 3px; color: var(--straw-hat); margin-bottom: 10px;
+        }
 
-        .luffy-icon { font-size: 4rem; margin-bottom: 10px; display: inline-block; animation: float 3s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .greeting { font-family: 'Dancing Script', cursive; font-size: 3rem; margin-bottom: 10px; color: var(--straw-hat); }
+
+        .timer-val { font-size: 2.2rem; font-weight: 900; color: white; margin: 15px 0; }
 
         .action-btn {
             background: var(--luffy-red); color: white; border: none;
             padding: 20px; border-radius: 25px; font-weight: 900;
             width: 100%; cursor: pointer; transition: 0.3s;
-            letter-spacing: 2px; text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .action-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(206, 17, 38, 0.4); }
+        .action-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
 
-        /* Haki Pulse Effect */
-        .haki-zone {
-            padding: 40px; border: 2px dashed var(--border);
+        .haki-hold {
+            padding: 40px 20px; border: 2px dashed rgba(255,255,255,0.2);
             border-radius: 25px; margin-top: 10px; cursor: pointer;
-            transition: 0.3s;
+            transition: 0.3s; font-weight: 600;
         }
-        .haki-zone:active { 
-            background: rgba(206, 17, 38, 0.2); 
-            border-color: var(--luffy-red);
-            box-shadow: 0 0 50px var(--luffy-red);
-        }
+        .haki-hold:active { background: rgba(206, 17, 38, 0.2); border-color: var(--luffy-red); box-shadow: 0 0 40px var(--luffy-red); }
 
         /* Safety Overlay */
         #safety-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 10000;
-            flex-direction: column; justify-content: center; align-items: center;
+            flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
 
-        .breathe-hat { font-size: 5rem; animation: breathe 4s infinite ease-in-out; }
-        @keyframes breathe { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } }
+        .breathe-hat {
+            font-size: 5rem; animation: breathe 4s infinite ease-in-out;
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(0.8); } 50% { transform: scale(1.2); } }
 
-        #flower-container { position: fixed; top:0; left:0; pointer-events:none; width:100%; height:100%; z-index: 5; }
+        #flower-fall { position: fixed; top:0; left:0; pointer-events:none; width:100%; height:100%; z-index: 5; }
     </style>
 </head>
 <body>
 
     <div id="cursor"></div>
-    <div id="flower-container"></div>
+    <div id="time-overlay"></div>
+    <div id="flower-fall"></div>
 
     <div class="app-shell">
         
-        <!-- Luffy Reassurance -->
-        <div class="ui-card" onclick="spawnFlower()">
-            <div class="luffy-icon">👒</div>
-            <p class="status-line">Captain: Shravani</p>
-            <h1 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: var(--straw-hat);">I'm Here, Shravani.</h1>
-            <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 10px;">
-                "I don't care how many of you there are! I'm staying right here by her side!"
-            </p>
-            <p style="font-size: 0.7rem; color: var(--straw-hat); margin-top: 10px;">(Tap Luffy to spawn flowers)</p>
+        <!-- Time-Aware Greeting -->
+        <div class="ui-card" onclick="spawnLove()">
+            <p class="status-line">USER_VERIFIED: SHRAVANI</p>
+            <h1 class="greeting" id="dynamic-greet">My Love</h1>
+            <p id="time-reassurance" style="opacity: 0.8; font-size: 1rem; line-height: 1.6;"></p>
+            <div style="font-size: 4rem; margin-top: 15px; animation: bounce 3s infinite;">👒</div>
+            <p style="font-size: 0.7rem; color: var(--straw-hat); margin-top: 10px;">(Tap Luffy for a surprise)</p>
         </div>
 
         <!-- The 26th Feb Anniversary -->
         <div class="ui-card">
-            <p class="status-line">Our Grand Line Journey</p>
+            <p class="status-line">OUR_JOURNEY_START: 26_FEB_2026</p>
             <div class="timer-val" id="timer">00d 00h 00m 00s</div>
-            <p style="font-size: 0.8rem; opacity: 0.5;">Since 26th Feb 2026</p>
-            <div style="font-size: 4rem; color: var(--straw-hat); line-height: 1; margin-top: 10px;">∞</div>
-            <p class="status-line" style="color:white;">Contract: Infinite</p>
+            <p style="font-size: 0.8rem; opacity: 0.5;">Time I've spent choosing you.</p>
+            <div style="font-size: 4rem; color: var(--straw-hat); margin-top: 10px; line-height: 1;">∞</div>
+            <p class="status-line" style="color:white;">COMMITMENT: INFINITE</p>
         </div>
 
-        <!-- Panic Protocol -->
+        <!-- Reassurance Button -->
         <div class="ui-card">
-            <p class="status-line">Stability Protocol</p>
-            <h3 style="margin-bottom: 15px;">Stormy Seas?</h3>
-            <button class="action-btn" onclick="startSafety()">Anchor My Heart</button>
+            <p class="status-line">STABILITY_PROTOCOL</p>
+            <h3 style="margin-bottom: 15px;">Feeling Overwhelmed?</h3>
+            <button class="action-btn" onclick="startSafety()">ANCHOR MY HEART</button>
         </div>
 
         <!-- Haki Pulse -->
         <div class="ui-card">
-            <p class="status-line">Nakama Haki</p>
-            <div class="haki-zone" id="hakiBtn">HOLD TO FEEL MY PROTECTION</div>
+            <p class="status-line">HAPTIC_CONNECTION</p>
+            <div class="haki-hold" id="hakiBtn">HOLD TO FEEL MY PROTECTION</div>
         </div>
 
         <!-- Truth Vault -->
         <div class="ui-card">
-            <p class="status-line">The Poneglyph</p>
-            <p id="truth-display" style="font-style: italic; min-height: 50px;">"Click to read a truth that will never change."</p>
-            <button onclick="getTruth()" style="background: none; border: 1px solid var(--straw-hat); color: var(--straw-hat); padding: 10px 20px; border-radius: 50px; margin-top: 15px;">Read Truth</button>
+            <p class="status-line">UNSHAKEABLE_TRUTHS</p>
+            <p id="noteDisplay" style="font-style: italic; min-height: 50px; margin-bottom: 15px;">"Tap for a reminder of why I'm here."</p>
+            <button onclick="getNote()" style="background: none; border: 1px solid white; color: white; padding: 10px 25px; border-radius: 50px; cursor: pointer;">Reveal Truth</button>
         </div>
 
     </div>
 
-    <!-- Safety Overlay -->
+    <!-- Hidden Safety UI -->
     <div id="safety-overlay">
         <div class="breathe-hat">👒</div>
-        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; color: var(--straw-hat);"></h2>
-        <button class="action-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">Back to the Ship</button>
+        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; color: var(--straw-hat); max-width: 500px;"></h2>
+        <button class="action-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">BACK TO THE SHIP</button>
     </div>
 
     <script>
@@ -158,7 +160,7 @@
             cursor.style.top = e.clientY + 'px';
         });
 
-        // 2. Timer (Feb 26, 2026)
+        // 2. Journey Timer (Feb 26, 2026)
         const start = new Date(2026, 1, 26); 
         function updateTimer() {
             const diff = new Date() - start;
@@ -170,61 +172,84 @@
         }
         setInterval(updateTimer, 1000);
 
-        // 3. Flower Spawner (Tulips & Daisies)
-        const flwrs = ['🌷', '🌼', '🐈'];
-        function spawnFlower() {
+        // 3. Sentient Time & "My Love" Vibe
+        function setVibe() {
+            const hr = new Date().getHours();
+            const greet = document.getElementById('dynamic-greet');
+            const note = document.getElementById('time-reassurance');
+            const overlay = document.getElementById('time-overlay');
+
+            if(hr >= 5 && hr < 12) {
+                greet.innerText = "Good Morning, My Love";
+                note.innerText = "Shravani, I woke up today with one goal: to make you feel as safe and loved as you truly are.";
+                overlay.style.background = "radial-gradient(circle at top, #ff9a9e 0%, #02010a 100%)";
+            } else if(hr >= 12 && hr < 18) {
+                greet.innerText = "Good Afternoon, My Love";
+                note.innerText = "Just a reminder in the middle of your day—I am your anchor. I am staying right here by your side.";
+                overlay.style.background = "radial-gradient(circle at top, #84fab0 0%, #02010a 100%)";
+            } else {
+                greet.innerText = "Good Night, My Love";
+                note.innerText = "Rest easy, Shravani. My commitment to you is the one thing that will never change while you sleep.";
+                overlay.style.background = "radial-gradient(circle at top, #302b63 0%, #02010a 100%)";
+            }
+        }
+        setVibe();
+
+        // 4. Note Vault (Reassurance)
+        const notes = [
+            "Shravani, I will never dump you. You are my absolute priority.",
+            "I'm not looking for an exit; I'm building a future with you.",
+            "When things get hard, I don't leave—I hold you tighter.",
+            "My love for you is permanent, unshakeable, and yours forever.",
+            "I choose you today. I'll choose you tomorrow. I'll choose you for eternity."
+        ];
+        function getNote() {
+            document.getElementById('noteDisplay').innerText = `"${notes[Math.floor(Math.random()*notes.length)]}"`;
+        }
+
+        // 5. Flower/Cat Spawner
+        const items = ['🌷', '🌼', '🐈'];
+        function spawnLove() {
             const f = document.createElement('div');
-            f.innerText = flwrs[Math.floor(Math.random()*flwrs.length)];
+            f.innerText = items[Math.floor(Math.random()*items.length)];
             f.style.position = 'fixed';
             f.style.left = Math.random() * 80 + 10 + 'vw';
             f.style.top = '100vh';
-            f.style.fontSize = '2rem';
+            f.style.fontSize = '2.5rem';
             f.style.transition = '4s linear';
             f.style.zIndex = '10';
-            document.getElementById('flower-container').appendChild(f);
+            document.getElementById('flower-fall').appendChild(f);
             setTimeout(() => { f.style.transform = 'translateY(-110vh) rotate(360deg)'; f.style.opacity = '0'; }, 100);
             setTimeout(() => f.remove(), 4000);
         }
 
-        // 4. Truth Vault
-        const truths = [
-            "Shravani, I will never dump you. I am your Nakama for life.",
-            "Even in the roughest seas, I am staying right by your side.",
-            "You are my greatest treasure. More than the One Piece.",
-            "I'm not looking for an exit; I'm building a future with you.",
-            "I choose you today. I'll choose you tomorrow. I'll choose you forever."
-        ];
-        function getTruth() {
-            document.getElementById('truth-display').innerText = `"${truths[Math.floor(Math.random()*truths.length)]}"`;
-        }
-
-        // 5. Safety Protocol
-        let currentStep = 0;
-        const steps = [
-            "Breathe with Luffy's Hat, Shravani... In and out.",
-            "The anxiety is just a stormy sea. I am your unsinkable ship.",
-            "You are safe. I am staying. We are Nakama.",
-            "Look at the timer—every second is proof I'm still here.",
-            "Feeling a bit more stable now?"
+        // 6. Safety Protocol
+        let step = 0;
+        const safetySteps = [
+            "Breathe with Luffy's hat, Shravani... In and out.",
+            "The anxiety is lying to you. I am telling the truth: I am staying.",
+            "I will never leave you behind. You are my home.",
+            "Every second on that timer is proof of my loyalty.",
+            "Ready to feel my love again?"
         ];
         function startSafety() {
             document.getElementById('safety-overlay').style.display = 'flex';
             nextStep();
         }
         function nextStep() {
-            if(currentStep < steps.length) {
-                document.getElementById('safety-text').innerText = steps[currentStep];
-                currentStep++;
+            if(step < safetySteps.length) {
+                document.getElementById('safety-text').innerText = safetySteps[step];
+                step++;
             } else {
                 document.getElementById('safety-overlay').style.display = 'none';
-                currentStep = 0;
+                step = 0;
             }
         }
 
-        // 6. Haki Pulse
-        const haki = document.getElementById('hakiBtn');
-        haki.onmousedown = () => haki.innerText = "⚡ PROTECTING YOU ⚡";
-        haki.onmouseup = () => haki.innerText = "HOLD TO FEEL MY PROTECTION";
+        // 7. Haki Logic
+        const hBtn = document.getElementById('hakiBtn');
+        hBtn.onmousedown = () => hBtn.innerText = "⚡ PROTECTING YOU ⚡";
+        hBtn.onmouseup = () => hBtn.innerText = "HOLD TO FEEL MY PROTECTION";
     </script>
 </body>
 </html>
