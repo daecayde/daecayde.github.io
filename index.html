@@ -3,224 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You Are My Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Infinity & Beyond</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff4d6d;
-            --soft-blue: #a2d2ff; /* Added a calming blue */
-            --bg-calm: #fcf6f5;
-            --glass: rgba(255, 255, 255, 0.85);
+            --accent: #ff4d6d;
+            --glass: rgba(255, 255, 255, 0.15);
+            --text: #2d3436;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #ffccd5, #f8edeb, #e8e8e4, #d8e2dc);
-            background-size: 400% 400%;
-            animation: gradientFlow 20s ease infinite;
-            color: #444;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f0c29; /* Deep space dark theme for max UI contrast */
+            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+            color: white;
+            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Floating Safety Hearts */
-        .safety-bg {
+        /* Animated Stars Background */
+        .stars-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
             z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            overflow: hidden;
         }
 
+        /* Hero Section */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            background: linear-gradient(to right, #ff4d6d, #ff85a1, #fcf6f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .reassurance-vault {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px;
+        }
+
+        /* High-End Glassmorphism Card */
+        .ui-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ui-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.2);
+        }
+
+        .ui-card h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .ui-card p {
+            line-height: 1.8;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Floating Navigation */
         nav {
             position: fixed;
-            top: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 900px;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 12px 25px;
-            border-radius: 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        .nav-links a { text-decoration: none; color: var(--primary); font-weight: 600; margin-left: 15px; font-size: 0.85rem; }
-
-        section { min-height: 100vh; padding: 120px 10%; display: flex; flex-direction: column; align-items: center; text-align: center; }
-
-        .glass-card {
-            background: var(--glass);
+            top: 30px; left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            max-width: 800px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255,255,255,0.6);
+            padding: 12px 30px;
+            border-radius: 100px;
+            display: flex;
+            gap: 25px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Breathing Circle */
-        .breath-container { margin: 30px 0; }
-        .circle {
-            width: 150px; height: 150px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: bold;
-            animation: breathe 8s infinite ease-in-out;
-            box-shadow: 0 0 20px rgba(255, 77, 109, 0.3);
-        }
-        @keyframes breathe {
-            0%, 100% { transform: scale(0.8); opacity: 0.6; }
-            50% { transform: scale(1.2); opacity: 1; }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
         }
 
-        .promise-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; width: 100%;
+        nav a:hover { color: var(--accent); }
+
+        /* The Question Button Section */
+        .cta-btn {
+            background: var(--accent);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 100px;
+            border: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
+            transition: 0.3s;
         }
 
-        .promise-card {
-            background: white; padding: 25px; border-radius: 20px;
-            border-left: 5px solid var(--primary);
-            text-align: left; transition: 0.3s;
+        .cta-btn:hover {
+            transform: scale(1.05);
+            background: #ff758c;
         }
 
-        h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--primary); }
-        h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;}
-
-        /* Modal Styles */
+        /* Eternity Modal */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px);
             z-index: 2000; justify-content: center; align-items: center;
         }
-        .modal-content { background: white; padding: 40px; border-radius: 30px; text-align: center; max-width: 400px; }
-        .btn { padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px; }
-        .btn-yes { background: var(--primary); color: white; }
-        .btn-no { background: #eee; color: #777; }
 
+        .modal-ui {
+            background: #1a1a2e;
+            border: 1px solid var(--accent);
+            padding: 60px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .btn-no {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 50px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="safety-bg" id="safety-bg"></div>
+    <div class="stars-container" id="stars"></div>
 
     <nav>
-        <div style="font-family: 'Dancing Script'; font-size: 1.6rem; color: var(--primary);">For Shravani</div>
-        <div class="nav-links">
-            <a href="#reassurance">My Promises</a>
-            <a href="#apology">Apology</a>
-            <a href="#" onclick="openModal()">Eternity?</a>
-        </div>
+        <a href="#hero">Start</a>
+        <a href="#vault">Reassurance</a>
+        <a href="#" onclick="openModal()">Forever</a>
     </nav>
 
     <section id="hero">
-        <h1>I'm Not Going Anywhere.</h1>
-        <p>Take a deep breath. I am right here, and I'm staying right here.</p>
-        <div class="breath-container">
-            <div class="circle" id="breathText">Breathe</div>
-        </div>
-        <p style="font-style: italic; opacity: 0.7;">(Breathe in as it grows, out as it shrinks)</p>
-    </section>
-
-    <section id="reassurance">
-        <h2>My Unbreakable Promises</h2>
-        <div class="promise-grid">
-            <div class="promise-card">
-                <h3>The "Never Leave" Rule</h3>
-                <p>I don't care how hard things get or how overwhelmed you feel. I am your teammate, not a stranger who walks away when it rains.</p>
-            </div>
-            <div class="promise-card">
-                <h3>The "Safe to Vent" Rule</h3>
-                <p>You can tell me you're overwhelmed 1,000 times a day. I will listen 1,001 times. Your feelings aren't a burden to me.</p>
-            </div>
-            <div class="promise-card">
-                <h3>The "Forever Look-Back"</h3>
-                <p>You think I'll never look back? I'm already looking at you as my future. There is no 'back' to go to—only forward with you.</p>
-            </div>
+        <h1 class="hero-title">My moon, You Are My Only.</h1>
+        <p style="font-size: 1.2rem; opacity: 0.7; max-width: 600px; text-align: center;">
+            There is no "leaving." There is no "letting go." There is only you and me, exactly where we belong.
+        </p>
+        <div style="margin-top: 40px; animation: bounce 2s infinite;">
+            <a href="#vault" style="color: var(--accent); font-size: 2rem; text-decoration: none;">↓</a>
         </div>
     </section>
 
-    <section id="apology">
-        <div class="glass-card">
-            <h2>I'm Sorry...</h2>
-            <p>
-                I hate that my actions added to your stress. I want to be your peace, not your problem. I was wrong for how I acted, and I'm sorry for making you doubt "us" even for a second.
-            </p>
-            <div style="margin-top: 20px;">
-                <button class="btn btn-yes" onclick="alert('Thank you for forgiving me. I love you so much.')">Do you forgive me?</button>
-                <button class="btn btn-no" onmouseover="teleport(this)">No</button>
+    <section id="vault">
+        <h2 style="margin-bottom: 40px; font-size: 2.5rem; text-align: center;">Our Unbreakable Anchor</h2>
+        <div class="reassurance-vault">
+            <div class="ui-card">
+                <h3>01. The Permanence</h3>
+                <p>I don't look for exits. I look for ways to make you smile. You aren't a temporary stop in my life; you are the destination I finally reached. I’m not going anywhere.</p>
+            </div>
+            <div class="ui-card">
+                <h3>02. Through the Noise</h3>
+                <p>When you feel overwhelmed, let me be your silence. I will hold your hand through the chaos until the world feels quiet again. We face everything together.</p>
+            </div>
+            <div class="ui-card">
+                <h3>03. My Commitment</h3>
+                <p>Every morning I wake up and choose you. Every night I fall asleep choosing you. That choice is fixed. It is permanent. It is yours forever.</p>
+            </div>
+            <div class="ui-card">
+                <h3>04. Safe With Me</h3>
+                <p>Your fears are valid, but they don't change the truth: I am here, I am staying, and I am deeply in love with the person you are.</p>
             </div>
         </div>
+        <button class="cta-btn" style="margin-top: 50px;" onclick="openModal()">A Final Promise</button>
     </section>
 
     <div id="eternityModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Spend eternity with me?</h2>
-            <p style="font-size: 0.9rem; margin-bottom: 20px;">(Because I'm never letting you go.)</p>
-            <button class="btn btn-yes" id="yesBtn" onclick="celebrate()">Yes!</button>
-            <button class="btn btn-no" id="noBtn" onclick="growYes()">No</button>
+        <div class="modal-ui">
+            <h2 id="mText" style="font-size: 2rem; margin-bottom: 25px;">Will you stay with me forever?</h2>
+            <div id="bGroup">
+                <button class="cta-btn" id="yesB" onclick="finalCelebrate()">Yes, Always</button>
+                <button class="btn-no" id="noB" onclick="refuse()">No</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Breathing Text Toggle
-        const breathText = document.getElementById('breathText');
-        setInterval(() => {
-            breathText.innerText = breathText.innerText === "Breathe" ? "In & Out" : "Breathe";
-        }, 4000);
-
-        // Teleport No Button
-        function teleport(btn) {
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
-            btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+        // Generate Starry Night UI
+        function initStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.background = 'white';
+                star.style.borderRadius = '50%';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.opacity = Math.random();
+                star.style.boxShadow = '0 0 10px white';
+                container.appendChild(star);
+            }
         }
+        initStars();
 
-        // Modal Logic
         function openModal() { document.getElementById('eternityModal').style.display = 'flex'; }
-        
-        let growScale = 1;
-        function growYes() {
-            growScale += 0.5;
-            document.getElementById('yesBtn').style.transform = `scale(${growScale})`;
-            document.getElementById('modalTitle').innerText = "Try again... I'm staying! ❤️";
-            if(growScale > 4) {
-                document.getElementById('noBtn').style.display = 'none';
+
+        let count = 0;
+        function refuse() {
+            count++;
+            const yes = document.getElementById('yesB');
+            const no = document.getElementById('noB');
+            const txt = document.getElementById('mText');
+
+            if (count < 6) {
+                yes.style.transform = `scale(${1 + count * 0.4})`;
+                txt.innerText = "Error: I'm not letting you go that easy! ❤️";
+            } else {
+                no.style.display = 'none';
+                txt.innerText = "The No button gave up. I never will. Say Yes? 😊";
             }
         }
 
-        function celebrate() {
-            document.getElementById('modalTitle').innerText = "I'm yours forever. ❤️";
-            setTimeout(() => { document.getElementById('eternityModal').style.display = 'none'; }, 2000);
+        function finalCelebrate() {
+            document.getElementById('mText').innerText = "I love you to the moon and back. Forever. ❤️✨";
+            document.getElementById('bGroup').innerHTML = '';
+            setTimeout(() => { document.getElementById('eternityModal').style.display = 'none'; }, 3000);
         }
-
-        // Background Hearts
-        function addHeart() {
-            const h = document.createElement('div');
-            h.innerHTML = '🛡️'; // Shield emoji for "Safety/Protection"
-            h.style.position = 'absolute';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.top = '100vh';
-            h.style.fontSize = '20px';
-            h.style.opacity = '0.3';
-            h.style.transition = 'transform 6s linear';
-            document.getElementById('safety-bg').appendChild(h);
-            setTimeout(() => { h.style.transform = 'translateY(-110vh)'; }, 100);
-            setTimeout(() => { h.remove(); }, 7000);
-        }
-        setInterval(addHeart, 1000);
     </script>
 </body>
 </html>
