@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity & Beyond</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
+    <title>Infinity // Shravani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --pink: #ff0054;
-            --accent-glow: rgba(255, 0, 84, 0.5);
-            --glass: rgba(255, 255, 255, 0.03);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -22,88 +22,73 @@
             transition: background 2s ease;
         }
 
-        /* Dynamic Time-Based Overlay */
-        #time-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            transition: 2s;
-        }
-
         #cursor {
             width: 15px; height: 15px;
-            background: white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s;
+            background: white; border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 9999;
+            mix-blend-mode: difference; transition: transform 0.1s ease;
         }
 
-        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
-
-        .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 40px;
-            padding: 60px;
-            text-align: center;
-            max-width: 900px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        #time-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; transition: 2s;
         }
 
-        .time-greeting {
-            font-family: 'Dancing Script', cursive;
-            font-size: 5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stats-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.05);
+        .app-shell {
+            max-width: 480px;
+            margin: 60px auto;
             padding: 20px;
-            border-radius: 20px;
-            min-width: 180px;
-            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .stat-value { font-weight: 900; color: var(--pink); font-size: 1.4rem; display: block; }
-        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; }
-
-        .glow-btn {
-            background: white;
-            color: black;
-            padding: 20px 50px;
-            border-radius: 100px;
-            border: none;
-            font-weight: 900;
-            margin-top: 50px;
-            letter-spacing: 2px;
-            transition: 0.4s;
-            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+        .ui-card {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
-        .glow-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px var(--pink); background: var(--pink); color: white; }
+        .status-line {
+            font-family: monospace; font-size: 0.65rem;
+            letter-spacing: 3px; color: var(--pink); margin-bottom: 10px;
+        }
 
-        /* Modal */
-        .modal {
+        .greeting { font-size: 2.2rem; font-weight: 900; margin-bottom: 5px; }
+
+        .timer-val { font-size: 1.8rem; font-weight: 900; color: var(--pink); margin: 15px 0; }
+
+        .action-btn {
+            background: var(--pink); color: white; border: none;
+            padding: 20px; border-radius: 25px; font-weight: 900;
+            width: 100%; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(255, 0, 84, 0.3);
+        }
+
+        .action-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
+
+        .hug-zone {
+            padding: 50px 20px; border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 25px; margin-top: 10px; transition: 0.3s;
+        }
+        .hug-zone:active { background: rgba(255, 0, 84, 0.1); border-color: var(--pink); }
+
+        /* Safety Overlay */
+        #safety-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(15px);
+            background: rgba(0,0,0,0.98); z-index: 10000;
+            flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
+
+        .breathe-circle {
+            width: 120px; height: 120px; background: var(--pink); border-radius: 50%;
+            animation: breathe 4s infinite ease-in-out;
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(0.8); } 50% { transform: scale(1.3); } }
     </style>
 </head>
 <body>
@@ -111,100 +96,133 @@
     <div id="cursor"></div>
     <div id="time-overlay"></div>
 
-    <section id="main">
-        <div class="glass-panel">
-            <p id="system-status" style="font-family: monospace; font-size: 0.7rem; color: var(--pink); margin-bottom: 20px; letter-spacing: 3px;">
-                STATUS: PROTECTING_SHRAVANI // STABILITY: 100%
-            </p>
-            
-            <h1 class="time-greeting" id="greeting">Good Moments</h1>
-            
-            <p id="reassurance-text" style="font-size: 1.2rem; opacity: 0.8; line-height: 1.8;">
-                I am here. I am staying. And I am choosing you every single second.
-            </p>
-
-            <div class="stats-container">
-                <div class="stat-card">
-                    <span class="stat-value" id="love-count">0</span>
-                    <span class="stat-label">Love Intensity</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value" id="clock">00:00:00</span>
-                    <span class="stat-label">Our Current Time</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-value">PERMANENT</span>
-                    <span class="stat-label">Contract Status</span>
-                </div>
-            </div>
-
-            <button class="glow-btn" onclick="openModal()">OPEN THE VAULT</button>
+    <div class="app-shell">
+        
+        <!-- Identity Section -->
+        <div class="ui-card">
+            <p class="status-line">USER_VERIFIED: SHRAVANI</p>
+            <h1 class="greeting" id="dynamic-greet">Good Moments</h1>
+            <p id="time-reassurance" style="opacity: 0.7; font-size: 0.9rem; line-height: 1.5;"></p>
         </div>
-    </section>
 
-    <div id="modal" class="modal">
-        <div style="text-align:center;">
-            <h2 id="mText" style="font-size: 3rem; margin-bottom: 30px;">I'm never letting you go.</h2>
-            <button class="glow-btn" onclick="document.getElementById('modal').style.display='none'">I feel safe now ❤️</button>
+        <!-- Journey Section -->
+        <div class="ui-card">
+            <p class="status-line">COMMITMENT_DURATION</p>
+            <div class="timer-val" id="timer">00d 00h 00m 00s</div>
+            <p style="font-size: 0.8rem; opacity: 0.5;">Every second spent choosing you.</p>
         </div>
+
+        <!-- Panic Button -->
+        <div class="ui-card">
+            <p class="status-line">REASSURANCE_PROTOCOL</p>
+            <h3 style="margin-bottom: 15px;">Feeling Overwhelmed?</h3>
+            <button class="action-btn" onclick="startSafety()">ACTIVATE SAFETY ANCHOR</button>
+        </div>
+
+        <!-- Touch Section -->
+        <div class="ui-card">
+            <p class="status-line">HAPTIC_CONNECTION</p>
+            <div class="hug-zone" id="hugZone">HOLD FOR A DIGITAL HUG</div>
+        </div>
+
+        <!-- Random Vault -->
+        <div class="ui-card">
+            <p id="noteDisplay" style="font-style: italic; min-height: 40px; margin-bottom: 15px;">"Tap for a reminder of why I'm here."</p>
+            <button onclick="getNote()" style="background: none; border: 1px solid white; color: white; padding: 8px 20px; border-radius: 50px;">New Note</button>
+        </div>
+
+    </div>
+
+    <!-- Hidden Safety UI -->
+    <div id="safety-overlay">
+        <div class="breathe-circle"></div>
+        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; max-width: 500px;"></h2>
+        <button class="action-btn" id="next-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">Next</button>
     </div>
 
     <script>
-        // Custom Cursor
+        // 1. Cursor
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Love Meter Logic
-        let love = 999999999999;
-        setInterval(() => {
-            love += Math.floor(Math.random() * 1000);
-            document.getElementById('love-count').innerText = love.toLocaleString();
-        }, 10);
-
-        // Time-Aware UI Logic
-        function updateTimeAwareness() {
+        // 2. Journey Timer (Update with your date!)
+        const start = new Date(2024, 0, 1); 
+        function updateTimer() {
             const now = new Date();
-            const hours = now.getHours();
-            const greeting = document.getElementById('greeting');
-            const overlay = document.getElementById('time-overlay');
-            const status = document.getElementById('reassurance-text');
-            
-            // Format Clock
-            document.getElementById('clock').innerText = now.toLocaleTimeString();
+            const diff = now - start;
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff / 3600000) % 24);
+            const m = Math.floor((diff / 60000) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+        }
+        setInterval(updateTimer, 1000);
 
-            // Morning (5am - 12pm)
-            if (hours >= 5 && hours < 12) {
-                greeting.innerText = "Good Morning, My Sun";
+        // 3. Sentient Time Logic
+        function setVibe() {
+            const hr = new Date().getHours();
+            const greet = document.getElementById('dynamic-greet');
+            const note = document.getElementById('time-reassurance');
+            const overlay = document.getElementById('time-overlay');
+
+            if(hr >= 5 && hr < 12) {
+                greet.innerText = "Morning, Shravani";
+                note.innerText = "I woke up today with the same goal: loving you better than I did yesterday.";
                 overlay.style.background = "radial-gradient(circle at top, #ff9a9e 0%, #02010a 100%)";
-                status.innerText = "Wake up knowing you are the most loved person on this planet. Today, tomorrow, and every morning after—I am yours.";
-            } 
-            // Afternoon (12pm - 5pm)
-            else if (hours >= 12 && hours < 17) {
-                greeting.innerText = "Good Afternoon, Beautiful";
+            } else if(hr >= 12 && hr < 18) {
+                greet.innerText = "Afternoon, Shravani";
+                note.innerText = "Just a reminder in the middle of your day—I am your anchor. I'm not going anywhere.";
                 overlay.style.background = "radial-gradient(circle at top, #84fab0 0%, #02010a 100%)";
-                status.innerText = "Even in the middle of a busy day, you are the only thing on my mind. I'm right here, anchored to you.";
-            }
-            // Evening (5pm - 9pm)
-            else if (hours >= 17 && hours < 21) {
-                greeting.innerText = "Good Evening, My Peace";
-                overlay.style.background = "radial-gradient(circle at top, #a18cd1 0%, #02010a 100%)";
-                status.innerText = "The day is winding down, but my commitment to you is only getting stronger. Rest easy knowing I've got you.";
-            }
-            // Night (9pm - 5am)
-            else {
-                greeting.innerText = "Good Night, My Everything";
+            } else {
+                greet.innerText = "Night, Shravani";
+                note.innerText = "Sleep easy. My love for you is the one thing that will never change while you sleep.";
                 overlay.style.background = "radial-gradient(circle at top, #302b63 0%, #02010a 100%)";
-                status.innerText = "Close your eyes and let go of the overwhelm. I am your safety net. I will be here when you wake up, and every night after.";
+            }
+        }
+        setVibe();
+
+        // 4. Note Vault
+        const notes = [
+            "Shravani, you are my absolute priority.",
+            "I'm not looking for an exit; I'm building a home with you.",
+            "My commitment to you is permanent and unbreakable.",
+            "When you feel like I'll leave, remember: I'm already your future.",
+            "You are safe. You are loved. You are home."
+        ];
+        function getNote() {
+            document.getElementById('noteDisplay').innerText = `"${notes[Math.floor(Math.random()*notes.length)]}"`;
+        }
+
+        // 5. Safety Protocol
+        let step = 0;
+        const safetySteps = [
+            "Breathe with the circle, Shravani...",
+            "The anxiety is lying to you. I am telling the truth.",
+            "I will never dump you. I will never leave.",
+            "You are the best thing that ever happened to me.",
+            "Ready to come back to me?"
+        ];
+        function startSafety() {
+            document.getElementById('safety-overlay').style.display = 'flex';
+            nextStep();
+        }
+        function nextStep() {
+            if(step < safetySteps.length) {
+                document.getElementById('safety-text').innerText = safetySteps[step];
+                step++;
+            } else {
+                document.getElementById('safety-overlay').style.display = 'none';
+                step = 0;
             }
         }
 
-        setInterval(updateTimeAwareness, 1000);
-        updateTimeAwareness();
-
-        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+        // 6. Hug Logic
+        const hZone = document.getElementById('hugZone');
+        hZone.onmousedown = () => hZone.innerText = "❤️ I'VE GOT YOU ❤️";
+        hZone.onmouseup = () => hZone.innerText = "HOLD FOR A DIGITAL HUG";
     </script>
 </body>
 </html>
