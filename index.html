@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity // Shravani</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
+    <title>Shravani // The Queen of My Heart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --pink: #ff0054;
+            --straw-hat: #f9d71c; /* Luffy's Hat Yellow */
             --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
         }
@@ -19,24 +20,25 @@
             background: #02010a;
             color: white;
             overflow-x: hidden;
-            transition: background 2s ease;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #02010a 100%);
         }
 
         #cursor {
             width: 15px; height: 15px;
-            background: white; border-radius: 50%;
+            background: var(--straw-hat); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 9999;
-            mix-blend-mode: difference; transition: transform 0.1s ease;
+            mix-blend-mode: difference; transition: transform 0.1s;
         }
 
-        #time-overlay {
+        /* Floating Decorations */
+        .flower-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; transition: 2s;
+            z-index: -1; pointer-events: none; opacity: 0.4;
         }
 
         .app-shell {
             max-width: 480px;
-            margin: 60px auto;
+            margin: 40px auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -45,117 +47,125 @@
 
         .ui-card {
             background: var(--glass);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--border);
             border-radius: 35px;
             padding: 30px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .status-line {
-            font-family: monospace; font-size: 0.65rem;
-            letter-spacing: 3px; color: var(--pink); margin-bottom: 10px;
+        /* One Piece Nakama Label */
+        .nakama-badge {
+            position: absolute; top: 15px; right: 15px;
+            font-size: 0.6rem; background: var(--straw-hat);
+            color: black; padding: 4px 10px; border-radius: 10px;
+            font-weight: 900; letter-spacing: 1px;
         }
 
-        .greeting { font-size: 2.2rem; font-weight: 900; margin-bottom: 5px; }
+        .status-line { font-family: monospace; font-size: 0.65rem; letter-spacing: 3px; color: var(--pink); margin-bottom: 10px; }
+        
+        .timer-val { font-size: 2.2rem; font-weight: 900; color: var(--straw-hat); text-shadow: 0 0 15px rgba(249, 215, 28, 0.3); }
 
-        .timer-val { font-size: 1.8rem; font-weight: 900; color: var(--pink); margin: 15px 0; }
+        /* The Orange Cat */
+        .cat-box {
+            font-size: 3rem; margin: 10px 0; cursor: pointer;
+            transition: 0.3s;
+        }
+        .cat-box:hover { transform: scale(1.2) rotate(5deg); }
 
         .action-btn {
             background: var(--pink); color: white; border: none;
             padding: 20px; border-radius: 25px; font-weight: 900;
             width: 100%; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(255, 0, 84, 0.3);
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        .action-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
-
-        .hug-zone {
-            padding: 50px 20px; border: 2px dashed rgba(255,255,255,0.2);
-            border-radius: 25px; margin-top: 10px; transition: 0.3s;
-        }
-        .hug-zone:active { background: rgba(255, 0, 84, 0.1); border-color: var(--pink); }
-
-        /* Safety Overlay */
+        /* Modal / Safety Interface */
         #safety-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 10000;
+            background: rgba(0,0,0,0.95); z-index: 10000;
             flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
 
         .breathe-circle {
-            width: 120px; height: 120px; background: var(--pink); border-radius: 50%;
-            animation: breathe 4s infinite ease-in-out;
+            width: 130px; height: 130px; border: 4px solid var(--straw-hat);
+            border-radius: 50%; animation: breathe 4s infinite ease-in-out;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
         }
-        @keyframes breathe { 0%, 100% { transform: scale(0.8); } 50% { transform: scale(1.3); } }
+        @keyframes breathe { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } }
+
     </style>
 </head>
 <body>
 
     <div id="cursor"></div>
-    <div id="time-overlay"></div>
+    <div class="flower-bg" id="flower-bg"></div>
 
     <div class="app-shell">
         
-        <!-- Identity Section -->
+        <!-- Header Section -->
         <div class="ui-card">
-            <p class="status-line">USER_VERIFIED: SHRAVANI</p>
-            <h1 class="greeting" id="dynamic-greet">Good Moments</h1>
-            <p id="time-reassurance" style="opacity: 0.7; font-size: 0.9rem; line-height: 1.5;"></p>
-        </div>
-
-       <!-- Journey Section: Maxed to Infinity -->
-        <div class="ui-card">
-            <p class="status-line">COMMITMENT_DURATION</p>
-            <div class="timer-val" id="timer" style="font-size: 4rem; letter-spacing: -5px; line-height: 1;">∞</div>
-            <p class="status-line" style="margin-top: 10px; color: white; opacity: 0.8;">ERROR: LIMIT_NOT_FOUND</p>
-            <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 10px;">
-                Shravani, this bond has no expiration date.
+            <span class="nakama-badge">NAKAMA FOUND</span>
+            <p class="status-line">SHIP_CAPTAIN: SHRAVANI</p>
+            <h1 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: var(--straw-hat);">The Queen's Harbor</h1>
+            <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 10px;">
+                "I don't want to conquer anything. I just think the person with the most freedom in the whole ocean is the Pirate King... and you are my ocean."
             </p>
         </div>
 
-        <!-- Panic Button -->
+        <!-- The Orange Cat Card -->
         <div class="ui-card">
-            <p class="status-line">REASSURANCE_PROTOCOL</p>
-            <h3 style="margin-bottom: 15px;">Feeling Overwhelmed?</h3>
-            <button class="action-btn" onclick="startSafety()">ACTIVATE SAFETY ANCHOR</button>
+            <p class="status-line">SHIP_PROTECTOR</p>
+            <div class="cat-box" onclick="meow()">🐈‍⬛</div>
+            <p id="cat-msg" style="font-size: 0.8rem; font-style: italic; opacity: 0.8;">Tap the orange cat for a belly rub!</p>
         </div>
 
-        <!-- Touch Section -->
+        <!-- Infinity Timer Card -->
         <div class="ui-card">
-            <p class="status-line">HAPTIC_CONNECTION</p>
-            <div class="hug-zone" id="hugZone">HOLD FOR A DIGITAL HUG</div>
+            <p class="status-line">JOURNEY_TRACKER</p>
+            <div class="timer-val" id="timer">00d 00h 00m 00s</div>
+            <p style="font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-transform: uppercase;">Time Spent Choosing Shravani</p>
+            <div style="font-size: 3rem; margin-top: 15px; color: var(--pink);">∞</div>
+            <p class="status-line" style="color:white; margin-top: -10px;">CONTRACT_EXPIRY: NEVER</p>
         </div>
 
-        <!-- Random Vault -->
+        <!-- Safety/Reassurance Section -->
         <div class="ui-card">
-            <p id="noteDisplay" style="font-style: italic; min-height: 40px; margin-bottom: 15px;">"Tap for a reminder of why I'm here."</p>
-            <button onclick="getNote()" style="background: none; border: 1px solid white; color: white; padding: 8px 20px; border-radius: 50px;">New Note</button>
+            <p class="status-line">REASSURANCE_SYSTEM</p>
+            <h3 style="margin-bottom: 15px;">Stormy Seas?</h3>
+            <button class="action-btn" onclick="startSafety()">Anchor the Ship</button>
+        </div>
+
+        <!-- Hidden Vault Card -->
+        <div class="ui-card">
+            <p class="status-line">SECRET_LOG_POSE</p>
+            <p id="quote-display" style="font-style: italic; min-height: 50px;">"Click for a reason I'm your Nakama forever."</p>
+            <button onclick="getQuote()" style="background: none; border: 1px solid var(--straw-hat); color: var(--straw-hat); padding: 10px 20px; border-radius: 50px; margin-top: 10px;">Unlock Reason</button>
         </div>
 
     </div>
 
-    <!-- Hidden Safety UI -->
+    <!-- Safety Overlay -->
     <div id="safety-overlay">
-        <div class="breathe-circle"></div>
-        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; max-width: 500px;"></h2>
-        <button class="action-btn" id="next-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">Next</button>
+        <div class="breathe-circle">⚓</div>
+        <h2 id="safety-text" style="margin-top: 50px; padding: 0 40px; color: var(--straw-hat);"></h2>
+        <button class="action-btn" id="next-btn" style="width: auto; margin-top: 40px; padding: 15px 50px;" onclick="nextStep()">Continue Journey</button>
     </div>
 
     <script>
-        // 1. Cursor
+        // 1. Custom Cursor
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // 2. Journey Timer (Update with your date!)
+        // 2. Journey Timer (Calculated from your start date)
         const start = new Date(2024, 0, 1); 
         function updateTimer() {
-            const now = new Date();
-            const diff = now - start;
+            const diff = new Date() - start;
             const d = Math.floor(diff / 86400000);
             const h = Math.floor((diff / 3600000) % 24);
             const m = Math.floor((diff / 60000) % 60);
@@ -164,68 +174,63 @@
         }
         setInterval(updateTimer, 1000);
 
-        // 3. Sentient Time Logic
-        function setVibe() {
-            const hr = new Date().getHours();
-            const greet = document.getElementById('dynamic-greet');
-            const note = document.getElementById('time-reassurance');
-            const overlay = document.getElementById('time-overlay');
-
-            if(hr >= 5 && hr < 12) {
-                greet.innerText = "Morning, Shravani";
-                note.innerText = "I woke up today with the same goal: loving you better than I did yesterday.";
-                overlay.style.background = "radial-gradient(circle at top, #ff9a9e 0%, #02010a 100%)";
-            } else if(hr >= 12 && hr < 18) {
-                greet.innerText = "Afternoon, Shravani";
-                note.innerText = "Just a reminder in the middle of your day—I am your anchor. I'm not going anywhere.";
-                overlay.style.background = "radial-gradient(circle at top, #84fab0 0%, #02010a 100%)";
-            } else {
-                greet.innerText = "Night, Shravani";
-                note.innerText = "Sleep easy. My love for you is the one thing that will never change while you sleep.";
-                overlay.style.background = "radial-gradient(circle at top, #302b63 0%, #02010a 100%)";
+        // 3. Flower Background Generator (Tulips & Daisies)
+        const flowers = ['🌷', '🌼'];
+        function createFlowers() {
+            const bg = document.getElementById('flower-bg');
+            for(let i=0; i<20; i++) {
+                const f = document.createElement('div');
+                f.innerText = flowers[Math.floor(Math.random()*flowers.length)];
+                f.style.position = 'absolute';
+                f.style.left = Math.random() * 100 + 'vw';
+                f.style.top = Math.random() * 100 + 'vh';
+                f.style.fontSize = Math.random() * 20 + 10 + 'px';
+                f.style.transform = `rotate(${Math.random() * 360}deg)`;
+                bg.appendChild(f);
             }
         }
-        setVibe();
+        createFlowers();
 
-        // 4. Note Vault
-        const notes = [
-            "Shravani, you are my absolute priority.",
-            "I'm not looking for an exit; I'm building a home with you.",
-            "My commitment to you is permanent and unbreakable.",
-            "When you feel like I'll leave, remember: I'm already your future.",
-            "You are safe. You are loved. You are home."
-        ];
-        function getNote() {
-            document.getElementById('noteDisplay').innerText = `"${notes[Math.floor(Math.random()*notes.length)]}"`;
+        // 4. Cat Interaction
+        function meow() {
+            const msgs = ["*Purrr* Shravani is the best!", "Meow! I'm guarding your heart!", "Purr... No one's leaving this ship!", "Meow! Nakama forever!"];
+            document.getElementById('cat-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
         }
 
-        // 5. Safety Protocol
-        let step = 0;
-        const safetySteps = [
-            "Breathe with the circle, Shravani...",
-            "The anxiety is lying to you. I am telling the truth.",
-            "I will never dump you. I will never leave.",
-            "You are the best thing that ever happened to me.",
-            "Ready to come back to me?"
+        // 5. Reasons Vault
+        const quotes = [
+            "Shravani, I found my 'One Piece' and it's you.",
+            "A pirate never leaves his Nakama behind. Ever.",
+            "The ocean is big, but I'm only sailing with you.",
+            "I'm staying because you make every island worth visiting.",
+            "I'm your anchor. I'm your ship. I'm your forever."
+        ];
+        function getQuote() {
+            document.getElementById('quote-display').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
+        }
+
+        // 6. Safety Protocol
+        let currentStep = 0;
+        const steps = [
+            "Breathe with the Anchor, Shravani. The storm is passing.",
+            "Luffy would never leave his crew, and I'll never leave my Queen.",
+            "I am staying. I am choosing you. I am yours.",
+            "The anxiety is just the fog; I am the lighthouse.",
+            "Ready to sail back into the peace?"
         ];
         function startSafety() {
             document.getElementById('safety-overlay').style.display = 'flex';
             nextStep();
         }
         function nextStep() {
-            if(step < safetySteps.length) {
-                document.getElementById('safety-text').innerText = safetySteps[step];
-                step++;
+            if(currentStep < steps.length) {
+                document.getElementById('safety-text').innerText = steps[currentStep];
+                currentStep++;
             } else {
                 document.getElementById('safety-overlay').style.display = 'none';
-                step = 0;
+                currentStep = 0;
             }
         }
-
-        // 6. Hug Logic
-        const hZone = document.getElementById('hugZone');
-        hZone.onmousedown = () => hZone.innerText = "❤️ I'VE GOT YOU ❤️";
-        hZone.onmouseup = () => hZone.innerText = "HOLD FOR A DIGITAL HUG";
     </script>
 </body>
 </html>
