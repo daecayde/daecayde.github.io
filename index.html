@@ -3,218 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Devi Ji</title>
-    
+    <title>You Are My Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --primary: #ff4d6d;
-            --secondary: #ff85a1;
-            --overlay: rgba(255, 255, 255, 0.8);
+            --soft-blue: #a2d2ff; /* Added a calming blue */
+            --bg-calm: #fcf6f5;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #ffccd5, #fff0f3, #ffe5ec, #ffb3c1);
+            background: linear-gradient(-45deg, #ffccd5, #f8edeb, #e8e8e4, #d8e2dc);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #4a4a4a;
-            overflow-x: hidden;
+            animation: gradientFlow 20s ease infinite;
+            color: #444;
             scroll-behavior: smooth;
         }
 
-        @keyframes gradientBG {
+        @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Floating Background */
-        .heart-bg {
+        /* Floating Safety Hearts */
+        .safety-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: -1;
         }
 
-        /* Nav Bar - Frosted Glass */
         nav {
             position: fixed;
-            top: 20px; left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 1000px;
-            background: var(--overlay);
-            backdrop-filter: blur(15px);
-            padding: 15px 30px;
-            border-radius: 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 600;
-            margin-left: 20px;
-            font-size: 0.9rem;
-        }
-
-        /* Sections */
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 100px 20px;
-            text-align: center;
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        /* Apology Card */
-        .glass-card {
-            background: var(--overlay);
+            top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 900px;
+            background: var(--glass);
             backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            border-radius: 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .nav-links a { text-decoration: none; color: var(--primary); font-weight: 600; margin-left: 15px; font-size: 0.85rem; }
+
+        section { min-height: 100vh; padding: 120px 10%; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
             padding: 40px;
             border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            max-width: 600px;
-            line-height: 1.8;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            max-width: 800px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.6);
         }
 
-        /* Buttons */
-        .btn-group { margin-top: 30px; position: relative; display: flex; justify-content: center; gap: 15px; }
-
-        .btn {
-            padding: 12px 35px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: 'Poppins', sans-serif;
+        /* Breathing Circle */
+        .breath-container { margin: 30px 0; }
+        .circle {
+            width: 150px; height: 150px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold;
+            animation: breathe 8s infinite ease-in-out;
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.3);
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.8); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
         }
 
-        .btn-yes { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
-        .btn-no { background: white; color: var(--primary); border: 1px solid var(--primary); }
+        .promise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; width: 100%;
+        }
 
-        /* Modal Overlay */
+        .promise-card {
+            background: white; padding: 25px; border-radius: 20px;
+            border-left: 5px solid var(--primary);
+            text-align: left; transition: 0.3s;
+        }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--primary); }
+        h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;}
+
+        /* Modal Styles */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 77, 109, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            justify-content: center; align-items: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            z-index: 2000; justify-content: center; align-items: center;
         }
-
-        .modal-content {
-            background: white;
-            padding: 50px;
-            border-radius: 40px;
-            max-width: 450px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-        }
+        .modal-content { background: white; padding: 40px; border-radius: 30px; text-align: center; max-width: 400px; }
+        .btn { padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 10px; }
+        .btn-yes { background: var(--primary); color: white; }
+        .btn-no { background: #eee; color: #777; }
 
     </style>
 </head>
 <body>
 
-    <div class="heart-bg" id="heart-bg"></div>
+    <div class="safety-bg" id="safety-bg"></div>
 
     <nav>
-        <div style="font-family: 'Dancing Script'; font-size: 1.8rem; color: var(--primary);">P & S</div>
+        <div style="font-family: 'Dancing Script'; font-size: 1.6rem; color: var(--primary);">For Vedanshi</div>
         <div class="nav-links">
+            <a href="#reassurance">My Promises</a>
             <a href="#apology">Apology</a>
-            <a href="#why">Why I Love You</a>
-            <a href="#" onclick="openModal()">The Question</a>
+            <a href="#" onclick="openModal()">Eternity?</a>
         </div>
     </nav>
 
     <section id="hero">
-        <h1>For You.</h1>
-        <p>A little space on the internet, just for us :P.</p>
-        <div style="margin-top: 20px; font-size: 2rem;">👇</div>
+        <h1>I'm Not Going Anywhere.</h1>
+        <p>Take a deep breath. I am right here, and I'm staying right here.</p>
+        <div class="breath-container">
+            <div class="circle" id="breathText">Breathe</div>
+        </div>
+        <p style="font-style: italic; opacity: 0.7;">(Breathe in as it grows, out as it shrinks)</p>
     </section>
 
-    <section id="apology">
-        <div class="glass-card">
-            <h2 style="margin-bottom: 15px;">I'm Sorry...</h2>
-            <p>
-                I hate that I acted that way kalse. You’re the most important person in my life, and my goal is always to make you smile, not to bring you down. I was wrong, and I'm learning how to be better for you every day.
-            </p>
-            <div class="btn-group">
-                <button class="btn btn-yes" onclick="forgiven()">Do you forgive me?</button>
-                <button class="btn btn-no" id="forgiveNo" onmouseover="teleportButton(this)">No</button>
+    <section id="reassurance">
+        <h2>My Unbreakable Promises</h2>
+        <div class="promise-grid">
+            <div class="promise-card">
+                <h3>The "Never Leave" Rule</h3>
+                <p>I don't care how hard things get or how overwhelmed you feel. I am your teammate, not a stranger who walks away when it rains.</p>
+            </div>
+            <div class="promise-card">
+                <h3>The "Safe to Vent" Rule</h3>
+                <p>You can tell me you're overwhelmed 1,000 times a day. I will listen 1,001 times. Your feelings aren't a burden to me.</p>
+            </div>
+            <div class="promise-card">
+                <h3>The "Forever Look-Back"</h3>
+                <p>You think I'll never look back? I'm already looking at you as my future. There is no 'back' to go to—only forward with you.</p>
             </div>
         </div>
     </section>
 
-    <section id="why">
-        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">Why I Love You</h2>
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-            <div class="glass-card" style="width: 300px; padding: 25px;">
-                <h3>Your Patience</h3>
-                <p>Because even when I'm difficult, you stay.</p>
-            </div>
-            <div class="glass-card" style="width: 300px; padding: 25px;">
-                <h3>Your Heart</h3>
-                <p>It's the kindest place I've ever known.</p>
+    <section id="apology">
+        <div class="glass-card">
+            <h2>I'm Sorry...</h2>
+            <p>
+                I hate that my actions added to your stress. I want to be your peace, not your problem. I was wrong for how I acted, and I'm sorry for making you doubt "us" even for a second.
+            </p>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-yes" onclick="alert('Thank you for forgiving me. I love you so much.')">Do you forgive me?</button>
+                <button class="btn btn-no" onmouseover="teleport(this)">No</button>
             </div>
         </div>
     </section>
 
     <div id="eternityModal" class="modal">
         <div class="modal-content">
-            <h2 id="modalTitle" style="font-size: 2rem; margin-bottom: 20px;">Spend eternity with me?</h2>
-            <div style="display: flex; justify-content: center; gap: 15px;">
-                <button class="btn btn-yes" id="yesBtn" onclick="celebrate()">Yes!</button>
-                <button class="btn btn-no" id="noBtn" onclick="refuseEternity()">No</button>
-            </div>
+            <h2 id="modalTitle">Spend eternity with me?</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 20px;">(Because I'm never letting you go.)</p>
+            <button class="btn btn-yes" id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button class="btn btn-no" id="noBtn" onclick="growYes()">No</button>
         </div>
     </div>
 
     <script>
-        // Create Floating Hearts
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
-            heart.style.position = 'absolute';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = '100vh';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.opacity = Math.random();
-            heart.style.transition = `transform ${Math.random() * 3 + 2}s linear, opacity 3s`;
-            
-            document.getElementById('heart-bg').appendChild(heart);
+        // Breathing Text Toggle
+        const breathText = document.getElementById('breathText');
+        setInterval(() => {
+            breathText.innerText = breathText.innerText === "Breathe" ? "In & Out" : "Breathe";
+        }, 4000);
 
-            setTimeout(() => {
-                heart.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
-            }, 100);
-
-            setTimeout(() => { heart.remove(); }, 5000);
-        }
-        setInterval(createHeart, 300);
-
-        // Forgive "No" Button Teleport
-        function teleportButton(btn) {
+        // Teleport No Button
+        function teleport(btn) {
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
             btn.style.position = 'fixed';
@@ -222,34 +188,39 @@
             btn.style.top = y + 'px';
         }
 
-        function forgiven() {
-            alert("Thank you ❤️ I promise to make it up to you.");
-        }
-
-        // Eternity Modal Logic
-        function openModal() {
-            document.getElementById('eternityModal').style.display = 'flex';
-        }
-
-        let noCount = 0;
-        function refuseEternity() {
-            noCount++;
-            const yesBtn = document.getElementById('yesBtn');
-            const modalTitle = document.getElementById('modalTitle');
-            
-            if (noCount < 5) {
-                yesBtn.style.transform = `scale(${1 + noCount * 0.4})`;
-                modalTitle.innerText = "Are you sure?? 🥺";
-            } else {
+        // Modal Logic
+        function openModal() { document.getElementById('eternityModal').style.display = 'flex'; }
+        
+        let growScale = 1;
+        function growYes() {
+            growScale += 0.5;
+            document.getElementById('yesBtn').style.transform = `scale(${growScale})`;
+            document.getElementById('modalTitle').innerText = "Try again... I'm staying! ❤️";
+            if(growScale > 4) {
                 document.getElementById('noBtn').style.display = 'none';
-                modalTitle.innerText = "No more 'No' for you! Just click Yes! 😊";
             }
         }
 
         function celebrate() {
-            document.getElementById('modalTitle').innerText = "I love you forever! ❤️✨";
+            document.getElementById('modalTitle').innerText = "I'm yours forever. ❤️";
             setTimeout(() => { document.getElementById('eternityModal').style.display = 'none'; }, 2000);
         }
+
+        // Background Hearts
+        function addHeart() {
+            const h = document.createElement('div');
+            h.innerHTML = '🛡️'; // Shield emoji for "Safety/Protection"
+            h.style.position = 'absolute';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.top = '100vh';
+            h.style.fontSize = '20px';
+            h.style.opacity = '0.3';
+            h.style.transition = 'transform 6s linear';
+            document.getElementById('safety-bg').appendChild(h);
+            setTimeout(() => { h.style.transform = 'translateY(-110vh)'; }, 100);
+            setTimeout(() => { h.remove(); }, 7000);
+        }
+        setInterval(addHeart, 1000);
     </script>
 </body>
 </html>
